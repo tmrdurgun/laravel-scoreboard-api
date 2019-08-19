@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class ScoresTableSeeder extends Seeder
+class ScoreTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,6 @@ class ScoresTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Scores::class, 250)->create();
+        factory(App\Score::class, 250)->create();
     }
 }
