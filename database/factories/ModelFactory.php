@@ -26,3 +26,11 @@ $factory->define(App\Games::class, function ($faker) {
         'title' => $faker->unique()->colorName
     ];
 });
+
+$factory->define(App\Scores::class, function ($faker) {
+    return [
+        'user_id' => $faker->numberBetween($min = 1, $max = 50),
+        'game_id' => $faker->numberBetween($min = 1, $max = 3),
+        'score' => $faker->numberBetween($min = 0, $max = 1000)
+    ];
+});
