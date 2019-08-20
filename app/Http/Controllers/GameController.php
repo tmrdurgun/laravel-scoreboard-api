@@ -8,23 +8,35 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Game;
-use App\User;
-use App\Http\Resources\GameResource;
-use App\Http\Resources\GamesResource;
-
 
 class GameController extends Controller
 {
-
-    public function show(Game $game)
-    {
-        GameResource::withoutWrapping();
-        
-        return new GameResource($game);
-    }
-
     public function get_games()
     {
-      $games = new GamesResource(Game::class);
+      $gameModel = new Game();
+      $games = $gameModel->get();
+
+      $response = [];
+
+      foreach($games as $game) {
+
+        $gameUsers = [];
+
+        foreach ($game->score as $score) {
+          $gameUsers[] = $score->user_id;
+        };
+
+        $uniqueUsers = collect($gameUsers)->unique()->values()->all();
+        $total_play_count = count($uniqueUsers);
+
+        $response[] = [
+          'id' => $game->id,
+          'title' => $game->title,
+          'unique_users' => $uniqueUsers,
+          'total_play_count' => $total_play_count
+        ];
+      }
+
+      return $response;
     }
 }
