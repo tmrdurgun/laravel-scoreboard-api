@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Game;
+use App\User;
 
 class GameController extends Controller
 {
@@ -17,11 +18,14 @@ class GameController extends Controller
         $games = $gameModel->get();
 
         $scores = [];
+        $users = [];
 
         foreach($games as $game) {
             $scores[] = $game->score;
+
+            $users[] = User::with('score')->get();
         }
 
-        return $scores;
+        return $users;
     }
 }
