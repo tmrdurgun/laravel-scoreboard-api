@@ -8,6 +8,7 @@ use App\User;
 
 class Score extends Model
 {
+    protected $hidden = ['created_at', 'updated_at'];
     
     public function game()
     {
@@ -16,6 +17,6 @@ class Score extends Model
 
     public function user()
     {
-        return $this->hasOne('App\User');
+        return $this->belongsTo('App\User');
     }
 }
