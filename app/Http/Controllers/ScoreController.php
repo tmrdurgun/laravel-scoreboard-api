@@ -50,8 +50,9 @@ class ScoreController extends Controller
 
     public function add_score(Request $request)
     {
-
         $response = [];
+
+        $scoreModel = new Score();
         
         $data = $request->json()->all();
 
@@ -59,24 +60,99 @@ class ScoreController extends Controller
         $user_id = $data['user_id'];
         $score = $data['score'];
 
+        $scoreData = $this->getScore($game_id, $user_id);
+
+        // Rank before new score
+        $max_score = json_decode($this->getMaxScore($game_id, $user_id));
+        $old_score = $max_score->score;
+        $new_score = $old_score + $score;
+
+        $old_rank = $this->getRank($game_id, $user_id);
+        
+        try {
+            $update = $scoreModel->where([ 'id' => $max_score->id, 'game_id' => $game_id, 'user_id' => $user_id])->update(['score' => $new_score]);
+
+            $new_rank = $this->getRank($game_id, $user_id);
+    
+            $sweepList = $this->sweepList($new_score);
+
+            $response[] = [
+                'status' => 1,
+                'user' => $scoreData->user,
+                'old_rank' => $old_rank,
+                'new_rank' => $new_rank,
+                'sweep' => $sweepList
+            ];
+        } catch (\Exception $e) {
+            $response[] = [
+                'status' => 0,
+                'message' => $e->getMessage()
+            ];
+        }        
+
+        return $response;
+    }
+
+    public function getMaxScore($game_id, $user_id) {
         $scoreModel = new Score();
 
-        $fields = [
+        $scoreList = $scoreModel->orderBy('score', 'desc')->get();
+        
+        $scoreList->map(function ($item, $key) {
+            return $item->rank = $key + 1;
+        });
+
+        $userScores = collect( $scoreList->filter(function($item) use($user_id, $game_id) {
+            return $item->game_id == (int)$game_id && $item->user_id == (int)$user_id;
+        })->toArray());
+
+        $userMaxScore = $userScores->where('score', $userScores->max('score'))->first();
+        
+        return collect($userMaxScore)->toJson();
+    }
+
+    public function getRank($game_id, $user_id) {
+        $max_score = json_decode($this->getMaxScore($game_id, $user_id));
+        return $max_score->rank;
+    }
+
+    public function getScore($game_id, $user_id){
+        $scoreModel = new Score();
+
+        $where = [
             'game_id' => $game_id,
             'user_id' => $user_id
         ];
 
-        $score = $scoreModel->where($fields)->first();
+        $score = $scoreModel->where($where)->first();
 
-        $user = $score->user;
-
-            $response[] = [
-                'user' => $user,
-                'old_rank' => $score->old_rank,
-                'new_rank' => $score->new_rank,
-                'sweep' => [1,2,3]
-            ];
-
-        return $response;
+        return $score;
     }
+
+    public function getScores() {
+        $scoreModel = new Score();
+
+        return $scoreModel->all()->orderBy('score', 'desc');
+    }
+
+    public function sweepList($score) {
+        $scoreModel = new Score();
+
+        $scoreList = $scoreModel->orderBy('score', 'desc')->get();
+
+        $sweepList = [];
+        
+        foreach ($scoreList as $item) {
+            $max_score = json_decode($this->getMaxScore($item->game_id, $item->user_id));
+
+            if((int)$max_score->score < (int)$score) {
+                $sweepList[] = $max_score->user_id;
+            };
+        }
+
+        $sweepList = collect($sweepList)->unique()->values()->all();
+
+        return $sweepList;
+    }
+
 }
