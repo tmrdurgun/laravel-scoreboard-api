@@ -47,4 +47,36 @@ class ScoreController extends Controller
 
         return $response;
     }
+
+    public function add_score(Request $request)
+    {
+
+        $response = [];
+        
+        $data = $request->json()->all();
+
+        $game_id = $data['game_id'];
+        $user_id = $data['user_id'];
+        $score = $data['score'];
+
+        $scoreModel = new Score();
+
+        $fields = [
+            'game_id' => $game_id,
+            'user_id' => $user_id
+        ];
+
+        $score = $scoreModel->where($fields)->first();
+
+        $user = $score->user;
+
+            $response[] = [
+                'user' => $user,
+                'old_rank' => $score->old_rank,
+                'new_rank' => $score->new_rank,
+                'sweep' => [1,2,3]
+            ];
+
+        return $response;
+    }
 }

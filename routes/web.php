@@ -20,3 +20,5 @@ Route::get('/', function () {
 Route::post('/getGames', 'GameController@get_games');
 
 Route::post('/getScoreboard', 'ScoreController@get_scoreboard');
+
+Route::post('/addScore', 'ScoreController@add_score');
