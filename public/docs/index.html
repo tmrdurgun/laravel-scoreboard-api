@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>API Reference</title>
+
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/all.js"></script>
+
+
+          <script>
+        $(function() {
+            setupLanguages(["bash","javascript"]);
+        });
+      </script>
+      </head>
+
+  <body class="">
+    <a href="#" id="nav-button">
+      <span>
+        SCOREBOARD API
+      </span>
+    </a>
+    <div class="tocify-wrapper">
+        <h3 style="text-align: center; color: #fff">SCOREBOARD API</h4>
+                    <div class="lang-selector">
+                                  <a href="#" data-language-name="bash">bash</a>
+                                  <a href="#" data-language-name="javascript">javascript</a>
+                            </div>
+                            <div class="search">
+              <input type="text" class="search" id="input-search" placeholder="Search">
+            </div>
+            <ul class="search-results"></ul>
+              <div id="toc">
+      </div>
+                    <ul class="toc-footer">
+                                  <li><a href='http://github.com/mpociot/documentarian'>Documentation Powered by Documentarian</a></li>
+                            </ul>
+            </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+          <!-- START_INFO -->
+<h1>Info</h1>
+<p>Welcome to the generated API reference.
+<a href="http://localhost/docs/collection.json">Get Postman Collection</a></p>
+<!-- END_INFO -->
+<h1>general</h1>
+<!-- START_9731a0d19c03c91d4bdaa3268e84ddad -->
+<h2>games</h2>
+<blockquote>
+<p>Example request: </p>
+
+</blockquote>
+<pre><code class="language-bash">curl -X POST "http://localhost/games" </code></pre>
+<pre><code class="language-javascript">const url = new URL("http://localhost/games");
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST games</code></p>
+<!-- END_9731a0d19c03c91d4bdaa3268e84ddad -->
+<!-- START_7a1c172dabd50f7cddbd0d24563c3ec9 -->
+<h2>scoreboard</h2>
+<blockquote>
+<p>Example request:
+  <br>
+  <code>
+    {
+      "game_id": 1
+    }
+  </code>
+</p>
+</blockquote>
+<pre><code class="language-bash">curl -X POST "http://localhost/scoreboard" </code></pre>
+<pre><code class="language-javascript">const url = new URL("http://localhost/scoreboard");
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST scoreboard</code></p>
+<!-- END_7a1c172dabd50f7cddbd0d24563c3ec9 -->
+<!-- START_82a1b35453272d595e4594bdebf17394 -->
+<h2>score/add</h2>
+<blockquote>
+<p>Example request:
+  <br>
+  <code>
+    {
+      "game_id": 1,
+      "user_id": 30,
+      "score": 5
+    }
+  </code>
+</p>
+</blockquote>
+<pre><code class="language-bash">curl -X POST "http://localhost/score/add" </code></pre>
+<pre><code class="language-javascript">const url = new URL("http://localhost/score/add");
+
+let headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json",
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+})
+    .then(response =&gt; response.json())
+    .then(json =&gt; console.log(json));</code></pre>
+<h3>HTTP Request</h3>
+<p><code>POST score/add</code></p>
+<!-- END_82a1b35453272d595e4594bdebf17394 -->
+      </div>
+      <div class="dark-box">
+                        <div class="lang-selector">
+                                    <a href="#" data-language-name="bash">bash</a>
+                                    <a href="#" data-language-name="javascript">javascript</a>
+                              </div>
+                </div>
+    </div>
+  </body>
+</html>
