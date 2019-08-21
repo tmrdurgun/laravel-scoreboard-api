@@ -17,8 +17,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/getGames', 'GameController@GetGames');
+Route::post('/games', 'GameController@GetGames');
 
-Route::post('/getScoreboard', 'ScoreController@GetScoreboard');
+Route::post('/scoreboard', 'ScoreController@GetScoreboard');
 
-Route::post('/addScore', 'ScoreController@AddScore');
+Route::post('/score/add', 'ScoreController@AddScore');

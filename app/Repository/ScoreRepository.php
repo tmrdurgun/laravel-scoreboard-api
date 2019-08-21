@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 class ScoreRepository {
 
-    CONST CACHE_KEY = 'GAMES';
+    CONST CACHE_KEY = 'SCORE';
     
     public function GetScoreboard($game_id)
     {
@@ -19,7 +19,7 @@ class ScoreRepository {
         $gameModel = new Game();
         $game = $gameModel->where('id', $game_id)->first();
 
-        $scores = collect($game->score)->sortByDesc('score');
+        $scores = collect($game->score)->sortByDesc('score')->unique('user')->values()->all();
 
         $limit = 25;
         $i = 0;
@@ -27,6 +27,7 @@ class ScoreRepository {
         foreach ($scores as $key => $value) {
 
             if($i < $limit){
+
                 $user = $value->user;
 
                 $response[] = [
@@ -84,9 +85,6 @@ class ScoreRepository {
     public function GetMaxScore($game_id, $user_id) {
         $scoreModel = new Score();
 
-        $cacheKey = 'score.all';
-        $key = $this->getCacheKey($cacheKey);
-
         $scoreList = $this->GetScores();
         
         $scoreList->map(function ($item, $key) {
@@ -130,9 +128,6 @@ class ScoreRepository {
 
     public function SweepList($score) {
         $scoreModel = new Score();
-
-        $cacheKey = 'score.all';
-        $key = $this->getCacheKey($cacheKey);
 
         $scoreList = $this->GetScores();
 
