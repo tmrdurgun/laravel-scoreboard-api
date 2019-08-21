@@ -17,7 +17,7 @@ class ScoreController extends Controller
     {
 
         $response = [];
-
+        
         $data = $request->json()->all();
 
         $game_id = $data['game_id'];
@@ -25,18 +25,24 @@ class ScoreController extends Controller
         $gameModel = new Game();
         $game = $gameModel->where('id', $game_id)->first();
 
-        $scores = $game->score;
+        $scores = collect($game->score)->sortByDesc('score');
+
+        $limit = 25;
+        $i = 0;
 
         foreach ($scores as $key => $value) {
-            $user = User::where('id', $value->user_id)->first();
 
-            // $user = Score::with('user')->get();
+            if($i < $limit){
+                $user = $value->user;
 
-            $response[] = [
-                'user_id' => $value->user_id,
-                'score' => $value->score,
-                'user_details' => $user
-            ];
+                $response[] = [
+                    'user' => $user,
+                    'score' => $value->score,
+                    'rank' => $i + 1
+                ];
+            }
+            
+            $i++;
         }
 
         return $response;
