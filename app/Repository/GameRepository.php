@@ -9,10 +9,10 @@ class GameRepository {
 
     CONST CACHE_KEY = 'GAMES';
     
-    public function getGames() {
+    public function GetGames() {
 
       $cacheKey = 'all';
-      $key = $this->getCacheKey($cacheKey);
+      $key = $this->GetCacheKey($cacheKey);
 
       $gameModel = new Game();
 
@@ -44,7 +44,7 @@ class GameRepository {
       return $response;
     }
 
-    public function getCacheKey($key) {
+    public function GetCacheKey($key) {
         $key = strtoupper($key);
 
         return self::CACHE_KEY .".$key";
