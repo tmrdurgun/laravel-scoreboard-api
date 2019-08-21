@@ -17,6 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/getGames', 'GameController@get_games')->name('games/getGames');
+Route::post('/getGames', 'GameController@get_games');
 
 Route::post('/getScoreboard', 'ScoreController@get_scoreboard');
